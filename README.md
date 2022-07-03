@@ -19,7 +19,7 @@ module.exports = {
   ...
   plugins: [
     // other plugins...
-    ['postcss-global-scope', {
+    ['@cookie_gg/postcss-global-scope', {
         skip: "*",
         classes: ["dark", "light"]
       }
