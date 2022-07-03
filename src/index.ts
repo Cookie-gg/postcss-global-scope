@@ -28,8 +28,6 @@ const plugin: Plugin = (decl, { skip, classes }) => {
       decl.remove();
     }
     if (selectorDetails) {
-      console.log(decl);
-
       const [, globalClass] = selectorDetails;
       const localClass = postcss.list.space(selector).slice(0, -1).join(' ');
       const newRule = postcss.rule({
