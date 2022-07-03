@@ -1,0 +1,81 @@
+name: release as a github package
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  setup:
+    name: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    outputs:
+      version: ${{ steps.package-version.outputs.version }}
+      tag-name: v${{ steps.package-version.outputs.version }}
+      tag-exist: ${{ steps.tag-check.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: set package version
+        id: package-version
+        run: node -p -e '`::set-output name=version::${require("./package.json").version}`'
+      - name: check tag exists
+        uses: bbonkr/git-tag-check-action@v1.0.9
+        id: tag-check
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.package-version.outputs.version }}
+          prefix: "v"
+
+  publish:
+    needs: setup
+    name: publish
+    runs-on: ubuntu-latest
+    if: needs.setup.outputs.tag-exist == ''
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: "https://registry.npmjs.org"
+          scope: "@cookie_gg"
+      - run: npm i
+      - run: npm run build
+      - run: npm publish --access=public ./
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  release:
+    name: release
+    needs: setup
+    runs-on: ubuntu-latest
+    if: needs.setup.outputs.tag-exist == ''
+    steps:
+      - uses: actions/checkout@v2
+      - name: create tag
+        uses: rickstaa/action-create-tag@v1.3.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "v${{ needs.setup.outputs.version }}"
+          commit_sha: ${{ github.sha }}
+
+      - name: set change log
+        uses: scottbrenner/generate-changelog-action@master
+        id: change-log
+
+      - name: Create a GitHub release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.setup.outputs.tag-name }}
+          release_name: Release ${{ needs.setup.outputs.tag-name }}
+          body: ${{ steps.change-log.outputs.changelog }}

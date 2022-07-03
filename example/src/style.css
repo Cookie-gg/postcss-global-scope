@@ -1,0 +1,10 @@
+main {
+  h1 {
+    /* color: red ^ blue; */
+    :global(.dark) {
+      color: blue;
+    }
+    font-size: 15px;
+    font-weight: bold;
+  }
+}

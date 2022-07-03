@@ -1,0 +1,35 @@
+{
+  "name": "@cookie_gg/postcss-global-scope",
+  "version": "0.0.1",
+  "description": "PostCSS plugin that supports global scoping in nested rules",
+  "main": "dist/index.js",
+  "private": false,
+  "keywords": [
+    "postcss",
+    "postcss-plugin"
+  ],
+  "author": "Cookie_gg",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npx rimraf ./dist && ncc build src/index.ts -w",
+    "build": "npx rimraf ./dist && ncc build src/index.ts -m",
+    "test:serve": "cd ./example && npm run test:serve",
+    "test:build": "cd ./example && npm run test:build"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "postcss": "^8.4.14",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  },
+  "files": [
+    "!*",
+    "!*/**/*",
+    "dist/**/*",
+    "package.json"
+  ]
+}
