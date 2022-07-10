@@ -1,14 +1,14 @@
-import postcss, { ChildNode, Container, Rule } from 'postcss';
+import postcss, { Rule } from 'postcss';
 import type * as PostCSS from 'postcss';
 import { REGEXP } from './libs/regexp';
 
-type Options = { skip?: string; classes?: string[] };
+type Options = { skip?: string; classes?: string[]; cssModule?: boolean };
 type Plugin = (decl: PostCSS.Declaration, opts: Required<Options>) => void;
 
 const SPLIT_REGEXP = REGEXP.SPLIT('^');
-const defaults: Required<Options> = { skip: '*', classes: [] };
+const defaults: Required<Options> = { skip: '-', classes: [], cssModule: false };
 
-const plugin: Plugin = (decl, { skip, classes }) => {
+const plugin: Plugin = (decl, { skip, classes, cssModule }) => {
   const { value: values, parent, prop, important } = decl;
   const selector = (parent as Rule).selector;
   const selectorDetails = selector.match(REGEXP.GLOBAL);
@@ -26,7 +26,7 @@ const plugin: Plugin = (decl, { skip, classes }) => {
       });
       decl.remove();
     }
-    if (selectorDetails) {
+    if (!cssModule && selectorDetails) {
       const [, globalClass] = selectorDetails;
       const localClass = postcss.list.space(selector).slice(1).join(' ');
       const newRule = postcss.rule({

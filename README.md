@@ -20,7 +20,7 @@ module.exports = {
   plugins: [
     // other plugins...
     ['@cookie_gg/postcss-global-scope', {
-        skip: "*",
+        skip: "-",
         classes: ["dark", "light"]
       }
     ]
@@ -33,7 +33,7 @@ module.exports = {
 /* before */
 main {
   h1 {
-    :global(.dark) {
+    :global(.dark) & {
       color: blue;
     }
   }
@@ -49,7 +49,7 @@ main {
 
 **skip: `String`**
 
-> default: '\*'
+> default: '-'
 
 Define the skip syntax used to ignore portions of the shorthand.
 
@@ -75,3 +75,10 @@ main {
   color: white;
 }
 ```
+
+
+**cssModule: `Boolean`**
+
+> default: 'false'
+
+If you use this plugin with css module, you don't need to use the function to parse `:global(class)`.
