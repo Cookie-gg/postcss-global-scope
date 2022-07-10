@@ -1,6 +1,5 @@
 import postcss, { ChildNode, Container, Rule } from 'postcss';
 import type * as PostCSS from 'postcss';
-
 import { REGEXP } from './libs/regexp';
 
 type Options = { skip?: string; classes?: string[] };
@@ -29,7 +28,7 @@ const plugin: Plugin = (decl, { skip, classes }) => {
     }
     if (selectorDetails) {
       const [, globalClass] = selectorDetails;
-      const localClass = postcss.list.space(selector).slice(0, -1).join(' ');
+      const localClass = postcss.list.space(selector).slice(1).join(' ');
       const newRule = postcss.rule({
         selector: `[class="${globalClass.replaceAll(/\./g, '')}"] ${localClass}`,
       });

@@ -1,7 +1,6 @@
 main {
   h1 {
-    /* color: red ^ blue; */
-    :global(.dark) {
+    :global(.dark) & {
       color: blue;
     }
     font-size: 15px;
