@@ -68,6 +68,35 @@ main {
 }
 
 /* after */
+[class*="dark"] main h1 {
+  color: dark;
+}
+[class*="light"] main h1 {
+  color: white;
+}
+```
+
+**cssModule: `Boolean`**
+
+> default: 'false'
+
+If you use this plugin with css module, you don't need to use the function to parse `:global(class)`.
+
+**strictScope: `Boolean`**
+
+> default: 'false'
+
+If you set this option to true, global seclector will be strict like below.
+
+```css:style.css
+/* before */
+main {
+  h1 {
+    color: white ^ black;
+  }
+}
+
+/* after */
 [class="dark"] main h1 {
   color: dark;
 }
@@ -75,10 +104,3 @@ main {
   color: white;
 }
 ```
-
-
-**cssModule: `Boolean`**
-
-> default: 'false'
-
-If you use this plugin with css module, you don't need to use the function to parse `:global(class)`.
