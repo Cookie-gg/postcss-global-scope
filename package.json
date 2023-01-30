@@ -1,6 +1,6 @@
 {
   "name": "@cookie_gg/postcss-global-scope",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "PostCSS plugin that supports global scoping in nested rules",
   "main": "dist/index.js",
   "private": false,

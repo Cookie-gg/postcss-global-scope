@@ -30,7 +30,7 @@ const plugin: Plugin = (decl, { skip, classes, cssModule, strictScope }) => {
       const [, globalClass] = selectorDetails;
       const localClass = postcss.list.space(selector).slice(1).join(' ');
       const newRule = postcss.rule({
-        selector: `[class="${globalClass.replaceAll(/\./g, '')}"] ${localClass}`,
+        selector: `[class${strictScope ? '' : '*'}="${globalClass.replaceAll(/\./g, '')}"] ${localClass}`,
       });
       const newDecl = postcss.decl({ prop, value: values, important });
       newRule.append(newDecl);
