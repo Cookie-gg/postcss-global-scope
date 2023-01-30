@@ -17,8 +17,8 @@ jobs:
       tag-name: v${{ steps.package-version.outputs.version }}
       tag-exist: ${{ steps.tag-check.outputs.tag }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: set package version
@@ -41,8 +41,8 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: "https://registry.npmjs.org"
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.setup.outputs.tag-exist == ''
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create tag
         uses: rickstaa/action-create-tag@v1.3.2
         with:
